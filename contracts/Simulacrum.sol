@@ -10,11 +10,11 @@ import "./interfaces/IERC20.sol";
 contract Simulacrum is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     constructor() initializer {}
 
-    IERC20 HYPR;
-    IERC20 simUSD;
+    IERC20 public HYPR;
+    IERC20 public simUSD;
 
-    mapping (address => uint) balances;
-    mapping (address => uint) debt;
+    mapping(address => uint256) balances;
+    mapping(address => uint256) debt;
 
     function initialize() public initializer {
         __Ownable_init();
@@ -25,28 +25,31 @@ contract Simulacrum is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         internal
         override
         onlyOwner
-    {}
+    {
 
-    function setHypr(address _hypr) onlyOwner {
+    }
+
+    function setHypr(address _hypr) onlyOwner external {
         HYPR = IERC20(_hypr);
     }
 
-
-    function setSimUSD(address _simUSD) onlyOwner {
+    function setSimUSD(address _simUSD) onlyOwner external {
         simUSD = IERC20(_simUSD);
     }
 
-    function _computeDebt(uint amount) internal returns (uint _debt) {
+    function _computeDebt(uint256 amount) internal returns (uint256 _debt) {
+        // use oracle to compute the debt to be issued
+        
+
+    }
+
+    function enter(uint256 _amount) external {
+        require(
+            HYPR.balanceOf(msg.sender) >= _amount,
+            "SIMULA: Insufficient Collateral"
+        );
         
     }
 
-    function enter(uint _amount) external {
-        require(HYPR.balanceOf(msg.sender) >= _amount, "SIMULA: Insufficient Collateral");
-        balances[msg.sender] += _amount;
-        
-    }
-
-    function exit() external {
-
-    }
+    function exit() external {}
 }
